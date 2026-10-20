@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRAZYMEDICINE</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Rubik:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="img/favicon.png">
+</head>
+<body>
+  <!-- BOTÓN DE PÁNICO FLOTANTE -->
+<div class="panic-container">
+  <label class="panic-switch">
+    <input type="checkbox" id="panic-button" onclick="alternarAlarma()">
+    <span class="panic-slider"></span>
+  </label>
+  <span class="panic-label">MODO EMERGENCIA</span>
+</div>
+
+   <header id="header" class="header">
+  <div class="logo">
+    <img src="img/logo.png" alt="Logo CRAZYMEDICINE" class="logo-img">
+    <h1><span>CRAZY</span><em>MEDICINE</em></h1>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#bestiario">Virus</a></li>
+      <li><a href="#quienes-somos">Quiénes somos</a></li>
+      <li><a href="#jugar">Jugar</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- 1. INICIO -->
+<section id="inicio" class="hero">
+  <div class="hero-text" data-reveal="left">
+    <p class="eyebrow">Hospital de caos controlado</p>
+    <h2>Combate virus. <span>Sobrevive</span> al resultado.</h2>
+    <p class="hero-sub">CRAZYMEDICINE es el juego donde cada decisión puede salvar la vida del paciente o causar consecuencias imprevistas. Combate, experimenta y descubre qué sale mal.</p>
+  </div>
+  <div class="hero-visual" data-reveal="right">
+    <img src="img/logo.png" alt="Logo CRAZYMEDICINE" class="hero-logo">
+  </div>
+</section>
+
+<div class="character-track" aria-hidden="true">
+  <img src="img/personaje-caminando.gif" alt="" class="walking-character" id="pastilla-portada">
+  <div class="saludo-character"></div>
+</div>
+
+<!-- 2. DEMOSTRACIÓN / CARRUSEL -->
+<section id="demo" class="demo-section" data-reveal="up">
+  <div class="demo-contenedor">
+    <h3>Demostración del juego</h3>
+    <p class="demo-sub">Un vistazo rápido a cómo se juega CRAZYMEDICINE. Usa las flechas o los puntos para recorrer las capturas.</p>
+
+    <div class="carrusel" id="carrusel-demo">
+      <button class="carrusel-btn carrusel-prev" onclick="moverCarrusel(-1)" aria-label="Captura anterior">&#10094;</button>
+
+      <div class="carrusel-viewport">
+        <div class="carrusel-track" id="carrusel-track">
+
+          <div class="carrusel-slide">
+            <img src="img/escenario-principal.png" alt="Vista del hospital durante el juego">
+            <p class="carrusel-caption">El hospital: tu campo de batalla contra los virus.</p>
+          </div>
+
+          <!-- Reemplaza estos placeholders con tus propias capturas del juego -->
+          <div class="carrusel-slide carrusel-slide--placeholder">
+            <div class="placeholder-box">
+              <span>+</span>
+              <p>Agrega aquí otra captura de tu juego<br><small>(ej: img/demo-2.png)</small></p>
+            </div>
+          </div>
+
+          <div class="carrusel-slide carrusel-slide--placeholder">
+            <div class="placeholder-box">
+              <span>+</span>
+              <p>Agrega aquí otra captura de tu juego<br><small>(ej: img/demo-3.png)</small></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <button class="carrusel-btn carrusel-next" onclick="moverCarrusel(1)" aria-label="Siguiente captura">&#10095;</button>
+    </div>
+
+    <div class="carrusel-dots" id="carrusel-dots">
+      <button class="dot active" onclick="irADiapositiva(0)" aria-label="Ir a la diapositiva 1"></button>
+      <button class="dot" onclick="irADiapositiva(1)" aria-label="Ir a la diapositiva 2"></button>
+      <button class="dot" onclick="irADiapositiva(2)" aria-label="Ir a la diapositiva 3"></button>
+    </div>
+  </div>
+</section>
+
+<!-- 3. EL HOSPITAL (ESCENARIO) -->
+<section id="escenario" class="escenario-section" data-reveal="up">
+  <div class="escenario-contenedor">
+    <div class="escenario-grid">
+      <div class="escenario-visual">
+        <img src="img/escenario-principal.png" alt="Escenario principal del hospital en CRAZYMEDICINE" class="escenario-img" onclick="ampliarImagen(this)">
+      </div>
+      <div class="escenario-info">
+        <span class="proto-tag">Nivel principal</span>
+        <h2>El Hospital</h2>
+        <p class="proto-lore">
+          Recorre los pasillos, la farmacia y las salas de camas mientras esquivas virus y curas pacientes. Cada zona del hospital esconde su propio reto: desde reponer medicamentos hasta estabilizar a los pacientes más graves.
+        </p>
+        <ul class="escenario-lista">
+          <li>🏥 Recepción y salas de espera</li>
+          <li>💊 Farmacia con medicamentos especiales</li>
+          <li>🛏️ Sala de camas con pacientes infectados</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. HÉROE PRINCIPAL (PROTAGONISTA) -->
+<section id="protagonista" class="protagonista-section" data-reveal="up">
+  <div class="proto-contenedor">
+    <div class="proto-grid">
+
+      <!-- Lado Izquierdo: Visualizador de Sprites -->
+      <div class="proto-visuals">
+        <div class="sprite-display-box">
+
+          <img src="img/frente.png" alt="Vista Frontal" class="sprite-view active" id="view-frente">
+          <img src="img/espalda.png" alt="Vista Trasera" class="sprite-view" id="view-espalda">
+          <img src="img/perfil-der.png" alt="Vista Perfil Derecho" class="sprite-view" id="view-derecha">
+          <img src="img/perfil-izq.png" alt="Vista Perfil Izquierdo" class="sprite-view" id="view-izquierda">
+        </div>
+
+        <!-- Botones selectores de perspectiva -->
+        <div class="proto-controles">
+          <button class="btn-rotar active" onclick="cambiarVista(event, 'frente')">Frente</button>
+          <button class="btn-rotar" onclick="cambiarVista(event, 'espalda')">Espalda</button>
+          <button class="btn-rotar" onclick="cambiarVista(event, 'derecha')">Der</button>
+          <button class="btn-rotar" onclick="cambiarVista(event, 'izquierda')">Izq</button>
+        </div>
+      </div>
+
+      <!-- Lado Derecho: Información del Personaje -->
+      <div class="proto-info">
+        <span class="proto-tag">Héroe Principal</span>
+        <h2>Dr. Pildora</h2>
+        <p class="proto-lore">
+          Diseñado en los laboratorios más caóticos del hospital, este pequeño comprimido pixelado es el encargado de limpiar las peores infecciones del cuerpo. ¡Muévelo en todas las direcciones para esquivar los virus!
+        </p>
+        <div class="proto-stats">
+          <div class="stat-bar">
+            <span>Dosis / Poder:</span>
+            <div class="bar-container"><div class="bar-fill" style="width: 85%;"></div></div>
+          </div>
+          <div class="stat-bar">
+            <span>Velocidad:</span>
+            <div class="bar-container"><div class="bar-fill" style="width: 70%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 5. BESTIARIO DE VIRUS -->
+<section id="bestiario" class="bestiario" data-reveal="up">
+  <div class="bestiario-contenedor">
+    <h3>Laboratorio: El Bestiario</h3>
+    <p class="bestiario-sub">Conoce a las amenazas microscópicas que infectan a tus pacientes. Estúdialos bajo tu propio riesgo.</p>
+
+    <div class="virus-grid">
+      <div class="virus-card" data-peligro="alto">
+        <div class="virus-visual-wrapper">
+          <div class="virus-avatar virus-avatar--neumonia"><img src="img/virus-neumonia.png" alt="Neumonía"></div>
+          <span class="badge-peligro">Peligro: Alto</span>
+        </div>
+        <h4>Neumonía</h4>
+        <p class="virus-desc">Una infección que inunda los pulmones del paciente. Tose esporas verdes que hacen toser a todo el que se acerque.</p>
+        <div class="virus-meta">
+          <span><strong>Debilidad:</strong> Pastilla Azul</span>
+        </div>
+      </div>
+
+      <div class="virus-card" data-peligro="medio">
+        <div class="virus-visual-wrapper">
+          <div class="virus-avatar virus-avatar--gripe"><img src="img/virus-gripe.png" alt="Gripe Tentáculos"></div>
+          <span class="badge-peligro">Peligro: Medio</span>
+        </div>
+        <h4>Gripe Tentáculos</h4>
+        <p class="virus-desc">Un virus verde de mil brazos que se pega a todo. Provoca fiebre, estornudos y ganas de quedarse en la cama.</p>
+        <div class="virus-meta">
+          <span><strong>Debilidad:</strong> Pastilla Roja</span>
+        </div>
+      </div>
+
+      <div class="virus-card" data-peligro="critico">
+        <div class="virus-visual-wrapper">
+          <div class="virus-avatar virus-avatar--covid"><img src="img/virus-covid.png" alt="Coronavirus"></div>
+          <span class="badge-peligro">Peligro: Crítico</span>
+        </div>
+        <h4>Coronavirus</h4>
+        <p class="virus-desc">Una esfera roja con espigas que se esparce rápido por el aire. Deja al paciente sin aliento y sin olfato.</p>
+        <div class="virus-meta">
+          <span><strong>Debilidad:</strong> Fusión Caótica</span>
+        </div>
+      </div>
+
+      <div class="virus-card" data-peligro="alto">
+        <div class="virus-visual-wrapper">
+          <div class="virus-avatar virus-avatar--diabetes"><img src="img/virus-diabetes.png" alt="Diabetes"></div>
+          <span class="badge-peligro">Peligro: Alto</span>
+        </div>
+        <h4>Diabetes</h4>
+        <p class="virus-desc">Un virus golosón que lanza cubos de azúcar sin parar y desordena la energía del paciente.</p>
+        <div class="virus-meta">
+          <span><strong>Debilidad:</strong> Pastilla Azul</span>
+        </div>
+      </div>
+
+      <div class="virus-card" data-peligro="medio">
+        <div class="virus-visual-wrapper">
+          <div class="virus-avatar virus-avatar--dengue"><img src="img/virus-dengue.png" alt="Dengue Voltio"></div>
+          <span class="badge-peligro">Peligro: Medio</span>
+        </div>
+        <h4>Dengue Voltio</h4>
+        <p class="virus-desc">Un virus eléctrico que sube la fiebre de golpe y llena al paciente de chispazos y dolor de cuerpo.</p>
+        <div class="virus-meta">
+          <span><strong>Debilidad:</strong> Pastilla Roja</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. SALUD Y BIENESTAR (ODS 3 - DESARROLLO SOSTENIBLE) -->
+<section id="salud" class="salud-section" data-reveal="up">
+  <div class="salud-contenedor">
+    <span class="ods-badge">ODS 3 · Objetivo de Desarrollo Sostenible</span>
+    <h3>Salud y Bienestar</h3>
+    <p class="salud-intro">
+      CRAZYMEDICINE no es solo caos y pastillas locas: cada partida está pensada para conectar con el Objetivo de Desarrollo Sostenible 3 de la ONU, "Salud y Bienestar". Cada vez que curas a un paciente, el juego te muestra qué virus lo afectaba, cómo se cura y cómo se previene en la vida real.
+    </p>
+
+    <div class="salud-ejemplo">
+      <div class="salud-ejemplo-header">
+        <span class="salud-icono">✅</span>
+        <h4>Paciente curado</h4>
+      </div>
+      <div class="salud-datos">
+        <div class="salud-dato">
+          <strong>Virus</strong>
+          <p>Nombre de la infección que tenía el paciente.</p>
+        </div>
+        <div class="salud-dato">
+          <strong>Cómo se cura</strong>
+          <p>Explicación breve del tratamiento aplicado en el juego.</p>
+        </div>
+        <div class="salud-dato">
+          <strong>Cómo se previene</strong>
+          <p>Un consejo real para evitar contagiarse.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. QUIÉNES SOMOS -->
+<section id="quienes-somos" class="quienes">
+  <div class="quienes-visual" data-reveal="left">
+    <span class="quienes-foto-aviso">Aquí va la foto del equipo<br><small>(img/equipo.jpg)</small></span>
+    <img src="img/equipo.jpg" alt="Foto del equipo CRAZYMEDICINE" class="quienes-foto" onerror="this.style.display='none'">
+  </div>
+  <div class="quienes-text" data-reveal="right">
+    <h3>Quiénes somos</h3>
+    <p>CRAZYMEDICINE nació como nuestro proyecto de grado. Somos tres estudiantes que se hicieron una pregunta rara: ¿y si aprender sobre salud pudiera ser tan divertido como jugar?</p>
+    <p>De esa pregunta salió un hospital lleno de virus, pastillas locas y un pequeño héroe llamado Dr. Pildora, además de muchísimo ensayo y error.</p>
+    <p>Desde entonces construimos experiencias donde equivocarse no solo se permite: se celebra.</p>
+  </div>
+
+  <!-- TARJETAS DEL EQUIPO: cambia nombre, rol, frase y poder de cada integrante -->
+  <div class="equipo-tarjetas">
+    <article class="miembro miembro--rojo" data-reveal="up">
+      <div class="miembro-avatar">💊</div>
+      <h4>Nombre del integrante 1</h4>
+      <span class="miembro-rol">Rol: programación</span>
+      <p class="miembro-frase">"Una frase divertida que lo describa."</p>
+      <p class="miembro-poder"><strong>Poder especial:</strong> Arreglar bugs a las 3 a. m.</p>
+    </article>
+
+    <article class="miembro miembro--azul" data-reveal="up" data-reveal-delay="150">
+      <div class="miembro-avatar">🧪</div>
+      <h4>Nombre del integrante 2</h4>
+      <span class="miembro-rol">Rol: arte y diseño</span>
+      <p class="miembro-frase">"Una frase divertida que lo describa."</p>
+      <p class="miembro-poder"><strong>Poder especial:</strong> Convertir ideas en virus pixelados</p>
+    </article>
+
+    <article class="miembro miembro--verde" data-reveal="up" data-reveal-delay="300">
+      <div class="miembro-avatar">🩺</div>
+      <h4>Nombre del integrante 3</h4>
+      <span class="miembro-rol">Rol: historia y contenido</span>
+      <p class="miembro-frase">"Una frase divertida que lo describa."</p>
+      <p class="miembro-poder"><strong>Poder especial:</strong> Inventar enfermedades con mucha personalidad</p>
+    </article>
+  </div>
+</section>
+
+<!-- 8. JUGAR -->
+<section id="jugar" class="cta">
+  <h3 data-reveal="up">¿Listo para experimentar?</h3>
+  <p>No necesitas bata de medico. Solo curiosidad (y ganas de que algo explote).</p>
+  <a href="#" class="btn-primary btn-big" data-reveal="up" data-reveal-delay="200">Jugar ahora</a>
+</section>
+
+<footer class="footer">
+  <img src="img/frente.png" alt="" class="footer-heroe" aria-hidden="true">
+
+  <div class="footer-contenedor">
+    <!-- Marca, contacto y redes -->
+    <div class="footer-col footer-marca">
+      <div class="footer-logo">
+        <img src="img/logo.png" alt="Logo CRAZYMEDICINE">
+        <span><b>CRAZY</b><em>MEDICINE</em></span>
+      </div>
+      <p>Combate virus. Sobrevive al resultado.</p>
+      <a href="mailto:crazymedicine8@gmail.com" class="footer-correo">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        crazymedicine8@gmail.com
+      </a>
+      <div class="redes-lista">
+        <a href="https://www.instagram.com/crazy_.medicine?rpxt=bGx4enE3N2R5djF0" target="_blank" rel="noopener" class="red-btn red-btn--instagram" aria-label="Instagram de CRAZYMEDICINE">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <span>Instagram</span>
+        </a>
+        <a href="https://www.tiktok.com/@crazy_medicine6" target="_blank" rel="noopener" class="red-btn red-btn--tiktok" aria-label="TikTok de CRAZYMEDICINE">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.3 2.4 1.7 4.2 4.1 4.4v3.1c-1.5.1-2.9-.4-4.1-1.1v6.2c0 3.5-2.4 6.2-5.9 6.2-3.3 0-5.9-2.6-5.9-5.9s2.7-6 6.2-5.9v3.2c-1.5-.2-2.9.9-2.9 2.7 0 1.6 1.2 2.8 2.7 2.8 1.6 0 2.8-1.2 2.8-3V3h3z"/></svg>
+          <span>TikTok</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Enlaces rápidos -->
+    <div class="footer-col footer-enlaces">
+      <h4>Enlaces rápidos</h4>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#escenario">El Hospital</a></li>
+        <li><a href="#protagonista">Dr. Pildora</a></li>
+        <li><a href="#bestiario">Virus</a></li>
+        <li><a href="#salud">Salud y Bienestar</a></li>
+        <li><a href="#quienes-somos">Quiénes somos</a></li>
+        <li><a href="#jugar">Jugar</a></li>
+      </ul>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="footer-col footer-newsletter">
+      <h4>Recibe novedades</h4>
+      <p>Déjanos tu correo y te avisamos cuando salgan nuevos virus, pastillas y la versión final.</p>
+      <form class="newsletter-form" id="newsletter-form" onsubmit="suscribirNewsletter(event)">
+        <input type="email" id="newsletter-email" placeholder="tucorreo@ejemplo.com" required aria-label="Correo electrónico">
+        <button type="submit">Suscribirme</button>
+      </form>
+      <p class="newsletter-msg" id="newsletter-msg" role="status"></p>
+    </div>
+  </div>
+
+  <div class="footer-copy">
+    <p>&copy; 2026 CRAZYMEDICINE. Todos los derechos reservados.</p>
+    <p class="footer-legal">
+      <a href="#" onclick="abrirLegal(event, 'terminos')">Términos y condiciones</a>
+      <span>·</span>
+      <a href="#" onclick="abrirLegal(event, 'privacidad')">Política de privacidad</a>
+    </p>
+    <p class="footer-aviso">Leer el prospecto antes de jugar. Consulte a su médico si la diversión persiste más de 4 horas.</p>
+  </div>
+</footer>
+
+<!-- MODALES LEGALES -->
+<div class="legal-modal" id="legal-modal" onclick="cerrarLegal(event)">
+  <div class="legal-caja" role="dialog" aria-modal="true">
+    <button class="legal-cerrar" onclick="cerrarLegal(event, true)" aria-label="Cerrar">&times;</button>
+    <div id="legal-contenido"></div>
+  </div>
+</div>
+
+<!-- MODAL PARA IMAGEN AMPLIADA -->
+<div class="img-modal" id="img-modal" onclick="cerrarImagen()">
+  <span class="img-modal-close">&times;</span>
+  <img src="" alt="Imagen ampliada" id="img-modal-content">
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
